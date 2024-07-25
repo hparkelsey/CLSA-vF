@@ -7,29 +7,25 @@ import { images } from '../assets'
 const Home = () => {
     const [text, setText] = useState('');
     const [keyword, setKeyword] = useState('');
+    const [pos, setPos] = useState(0.0);
+    const [neg, setNeg] = useState(0.0);
+    const [neu, setNeu] = useState(0.0);
+    const [comp, setComp] = useState(0.0);
+    //state vars^
 
     const handleAnalysis = () => {
- 
+        //hook to python script
     }
     
     return (
-        <SafeAreaView style ={{ flex: 1, 
-        }}>
+        <SafeAreaView>
             <Stack.Screen
                 options={{ 
                     headerStyle: { backgroundColor: '#FFFFFF', },
                     headerShadowVisible: false, 
                     headerLeft: () => (
-                        <View
-                            style={{
-                                position: 'absolute',
-                                top: 0,
-                                left: -750,
-                                width: '100%',
-                                height: '100%',
-                            }}
-                        >
-                            <Image source={images.logo} style={{ aspectRatio: 1, flex:1}} resizeMode='contain'/>
+                        <View style={{marginLeft:10}}>
+                            <Image source={images.logo} style={{ width: 200, height: 80}} resizeMode='contain'/>
                         </View>
                     ),
                     headerTitle:"",
@@ -64,27 +60,34 @@ const Home = () => {
                                 <Text style={{ color: "#385494", fontWeight: "500", }}> Run analysis </Text>
                             </TouchableOpacity>
                             <Text style={{ color: "#ffffff", fontSize: 36, fontWeight: 'bold', margin: 20}}  >Results: </Text>
-                            <Text style={{ color: "#ffffff", fontSize: 26, margin: 20}}>Pos: </Text>
-                            <Text style={{ color: "#ffffff", fontSize: 26, margin: 20}}>Neu: </Text>
-                            <Text style={{ color: "#ffffff", fontSize: 26, margin: 20}}>Neg: </Text>
-                            <Text style={{ color: "#ffffff", fontSize: 26, margin: 20}}>Compounded: </Text>
+                            {/*For Zach: display values:*/}
+                            <Text style={{ color: "#ffffff", fontSize: 26, margin: 20}}>Pos: {pos}</Text>
+                            <Text style={{ color: "#ffffff", fontSize: 26, margin: 20}}>Neu: {neu}</Text>
+                            <Text style={{ color: "#ffffff", fontSize: 26, margin: 20}}>Neg: {neg}</Text>
+                            <Text style={{ color: "#ffffff", fontSize: 26, margin: 20}}>Comp: {comp}</Text>
                         </View>
                     </View>
-                    {/* <View
-                        style={{
-                            padding: 10, 
-                            //width: '100%', 
-                            margin: 20, 
-                            marginTop: 40, 
-                            //backgroundColor: '#385494'
-                        }} 
-                    >
-                        <Text style={{ color: "#ffffff", fontSize: 36, fontWeight: 'bold',}}>Results: </Text>
-                        <Text style={{ color: "#ffffff", fontSize: 26, margin: 20}}>Pos: </Text>
-                        <Text style={{ color: "#ffffff", fontSize: 26, margin: 20}}>Neu: </Text>
-                        <Text style={{ color: "#ffffff", fontSize: 26, margin: 20}}>Neg: </Text>
-                        <Text style={{ color: "#ffffff", fontSize: 26, margin: 20}}>Compounded: </Text>
-                    </View> */}
+                    {/*below text input*/}
+                    <View style={{flexDirection:'row'}}>
+                        <View style={{textAlign:'left', width: 1000, marginHorizontal: 10}}>
+                            <Text style={{ color: "#ffffff", fontSize: 36, fontWeight: 'bold', marginTop: 20, marginBottom:30}}  >Summary: </Text>
+                            <View style={{
+                                height: 600,
+                                borderRadius: 5,
+                                marginBottom: 50,
+                                padding: 10,
+                                width: 1000,
+                                textAlignVertical:'top',
+                                textAlign: 'left',
+                                backgroundColor: "#ccc",
+                            }}>
+                                <Text style={{ color: "#83829A", fontSize: 16}}  >Summary... </Text>
+                            </View>
+                        </View>
+                        <View style={{width:200, marginHorizontal:10}}>
+                            {/*keep empty*/}
+                        </View>
+                    </View>
                 </ScrollView>
         </SafeAreaView>
     )
@@ -94,14 +97,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#385494",
-        alignItems:'center', //center horizontally,
+        alignItems:'center', 
         justifyContent: 'center'
     },
     container2: {
         flexDirection:'row',
-        flex:1,
-        padding:100,
-
+        paddingTop: 50,
     },
     textInput: {
         height: 600,
