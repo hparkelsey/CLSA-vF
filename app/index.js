@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { View, ScrollView, SafeAreaView, Text, Image, TextInput, TouchableOpacity, StyleSheet, } from 'react-native';
-import {Stack, useRouter } from 'expo-router';
+import {Stack} from 'expo-router';
 import { images } from '../assets'
-
 
 const Home = () => {
     const [text, setText] = useState('');
@@ -11,10 +10,33 @@ const Home = () => {
     const [neg, setNeg] = useState(0.0);
     const [neu, setNeu] = useState(0.0);
     const [comp, setComp] = useState(0.0);
+    const [summary, setSummary] = useState('Summary...')
     //state vars^
 
-    const handleAnalysis = () => {
-        //hook to python script
+    const handleAnalysis = async () => {
+        try {
+            const response = await fetch('http://localhost:19000/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text, subject: keyword })
+            });
+            const result = await response.json();
+            
+            if (result.error) {
+                console.error(result.error);
+            } else {
+                const { avg_scores, relevant_sentences } = result;
+                setPos(avg_scores.pos);
+                setNeg(avg_scores.neg);
+                setNeu(avg_scores.neu);
+                setComp(avg_scores.compound);
+                setSummary(relevant_sentences.join(' '));
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
     
     return (
@@ -81,7 +103,7 @@ const Home = () => {
                                 textAlign: 'left',
                                 backgroundColor: "#ccc",
                             }}>
-                                <Text style={{ color: "#83829A", fontSize: 16}}  >Summary... </Text>
+                                <Text style={{ color: "#83829A", fontSize: 16}}  >{summary}</Text>
                             </View>
                         </View>
                         <View style={{width:200, marginHorizontal:10}}>
@@ -136,7 +158,6 @@ const styles = StyleSheet.create({
         marginHorizontal:10,
         marginVertical: 10
     }
-  });
-
+});
 
 export default Home;
