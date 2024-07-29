@@ -15,7 +15,7 @@ const Home = () => {
 
     const handleAnalysis = async () => {
         try {
-            const response = await fetch('http://10.219.113.158:5000/analyze', {
+            const response = await fetch('http://192.168.1.2:5000/analyze', { // Replace with your local IP
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -45,6 +45,7 @@ const Home = () => {
             console.error('Fetch Error:', error.message);
         }
     }
+    
     
     
     
