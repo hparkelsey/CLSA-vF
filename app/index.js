@@ -15,13 +15,20 @@ const Home = () => {
 
     const handleAnalysis = async () => {
         try {
-            const response = await fetch('http://localhost:19000/analyze', {
+            const response = await fetch('http://10.219.113.158:5000/analyze', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ text, subject: keyword })
             });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Error:', errorData);
+                return;
+            }
+    
             const result = await response.json();
             
             if (result.error) {
@@ -35,9 +42,11 @@ const Home = () => {
                 setSummary(relevant_sentences.join(' '));
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Fetch Error:', error.message);
         }
     }
+    
+    
     
     return (
         <SafeAreaView>
@@ -83,10 +92,10 @@ const Home = () => {
                             </TouchableOpacity>
                             <Text style={{ color: "#ffffff", fontSize: 36, fontWeight: 'bold', margin: 20}}  >Results: </Text>
                             {/*For Zach: display values:*/}
-                            <Text style={{ color: "#ffffff", fontSize: 26, margin: 20}}>Pos: {pos}</Text>
-                            <Text style={{ color: "#ffffff", fontSize: 26, margin: 20}}>Neu: {neu}</Text>
-                            <Text style={{ color: "#ffffff", fontSize: 26, margin: 20}}>Neg: {neg}</Text>
-                            <Text style={{ color: "#ffffff", fontSize: 26, margin: 20}}>Comp: {comp}</Text>
+                            <Text style={{ color: "#ffffff", fontSize: 26, margin: 20}}>Pos: {pos.toFixed(3)}</Text>
+                            <Text style={{ color: "#ffffff", fontSize: 26, margin: 20}}>Neu: {neu.toFixed(3)}</Text>
+                            <Text style={{ color: "#ffffff", fontSize: 26, margin: 20}}>Neg: {neg.toFixed(3)}</Text>
+                            <Text style={{ color: "#ffffff", fontSize: 26, margin: 20}}>Comp: {comp.toFixed(3)}</Text>
                         </View>
                     </View>
                     {/*below text input*/}
