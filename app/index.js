@@ -15,7 +15,7 @@ const Home = () => {
 
     const handleAnalysis = async () => {
         try {
-            const response = await fetch('http://10.219.113.158:5000/analyze', {
+            const response = await fetch('http://10.250.217.140:5000/analyze', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
