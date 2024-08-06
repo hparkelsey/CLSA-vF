@@ -12,10 +12,11 @@ const Home = () => {
     const [comp, setComp] = useState(0.0);
     const [summary, setSummary] = useState('Summary...')
     //state vars^
+    //10.250.217.140
 
     const handleAnalysis = async () => {
         try {
-            const response = await fetch('http://10.250.217.140:5000/analyze', {
+            const response = await fetch('http://localhost:5000/analyze', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
