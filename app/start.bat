@@ -1,39 +1,37 @@
 @echo off
+REM Navigate to the directory where the script is located
+cd /d %~dp0
 
-REM Check if virtual environment exists
-if not exist "venv" (
+REM Check if virtual environment directory exists
+if not exist "venv\Scripts\activate.bat" (
     echo Virtual environment not found at venv. Please ensure it's created.
     exit /b 1
 )
 
-REM Activate the virtual environment for the backend
-call venv\Scripts\activate
+REM Activate virtual environment
+call venv\Scripts\activate.bat
 
 REM Install Python dependencies
 pip install -r requirements.txt
 
-REM Find available port for backend and active IP address
-for /f "delims=" %%i in ('python -c "import socket; s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM); s.connect((''8.8.8.8'', 80)); print(s.getsockname()[0]); s.close()"') do set BACKEND_IP=%%i
+REM Find an available port for the backend starting from 5000
+set backend_port=5000
 
-for /f "delims=" %%i in ('python -c "import socket; port=5000; s=socket.socket(socket.AF_INET, socket.SOCK_STREAM); s.bind(('', port)); print(port); s.close()"') do set BACKEND_PORT=%%i
+:CHECK_PORT
+    netstat -ano | findstr ":!backend_port!" > nul
+    if not errorlevel 1 (
+        set /a backend_port=!backend_port!+1
+        goto CHECK_PORT
+    )
+echo Using backend port: !backend_port!
 
-REM Start the Flask backend with the dynamic port and IP
-start /b python script.py
-
-REM Navigate to the frontend directory
-cd ..
-
-REM Set the frontend to use the backend IP and port
-set REACT_APP_BACKEND_IP=%BACKEND_IP%
-set REACT_APP_BACKEND_PORT=%BACKEND_PORT%
-
-REM Install Node.js dependencies
-npm install
+REM Start the Flask backend with the dynamic port
+set FLASK_RUN_PORT=!backend_port!
+set FLASK_APP=script.py
+python script.py --port=!backend_port! &
 
 REM Start the Expo frontend
 npx expo start
 
-REM Deactivate the virtual environment when done
-call venv\Scripts\deactivate
-
-pause
+REM Deactivate virtual environment
+deactivate
