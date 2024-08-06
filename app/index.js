@@ -12,12 +12,13 @@ const Home = () => {
     const [comp, setComp] = useState(0.0);
     const [summary, setSummary] = useState('Summary...');
 
-    // Retrieve backend port from environment variable
+    // Retrieve backend IP and port from environment variable
+    const backendIp = process.env.REACT_APP_BACKEND_IP || 'localhost';
     const backendPort = process.env.REACT_APP_BACKEND_PORT || 5001; // Default to 5001 if not set
 
     const handleAnalysis = async () => {
         try {
-            const response = await fetch(`http://localhost:${backendPort}/analyze`, {
+            const response = await fetch(`http://${backendIp}:${backendPort}/analyze`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
